@@ -4,7 +4,12 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "build": "npx tsc",
+    "start": "npm run build && node dist/server.js",
+    "dev": "nodemon server.js",
+    "seed": "node seeds/seed.js",
+    "start:prod": "NODE_ENV=production node server.js",
+    "dev:prod": "NODE_ENV=production nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +19,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "moment": "^2.30.1",
-    "mongoose": "^8.9.2"
+    "mongoose": "^8.9.2",
+    "typescript": "^5.7.2"
   }
 }
