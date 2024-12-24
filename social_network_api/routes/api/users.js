@@ -1,6 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../../models/User');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 
 // GET all users
 router.get('/', async (req, res) => {

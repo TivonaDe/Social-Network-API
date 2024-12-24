@@ -2,6 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Thought = require('../../models/Thought');
 const User = require('../../models/User');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
+
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
 
 // GET all thoughts
 router.get('/', async (req, res) => {
