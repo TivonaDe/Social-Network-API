@@ -1,8 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const { Schema } = mongoose;
-const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
+
+if (!process.env.MONGODB_URI) {
+  throw new Error('MONGODB_URI is not defined in the environment variables');
+}
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
@@ -48,5 +51,5 @@ thoughtSchema.virtual('reactionCount').get(function () {
   return this.reactions.length;
 });
 
-const Thought = mongoose.model('Thought', thoughtSchema);
+export const Thought = mongoose.model('Thought', thoughtSchema);
 module.exports = Thought;

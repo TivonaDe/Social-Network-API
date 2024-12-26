@@ -1,22 +1,22 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import mongoose from 'mongoose';
+const { Schema: MongooseSchema } = mongoose;
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  throw new Error('MONGODB_URI is not defined');
+}
+
+mongoose.connect(mongoUri);
 
 
-const reactionSchema = new Schema(
+const reactionSchema = new MongooseSchema(
   {
     reactionBody: {
       type: String,
       required: true,
       maxlength: 280,
-    },
+    },          
     username: {
       type: String,
       required: true,

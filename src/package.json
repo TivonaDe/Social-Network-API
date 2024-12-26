@@ -1,13 +1,14 @@
 {
-  "name": "social_network_api",
+  "name": "src",
   "version": "1.0.0",
   "main": "server.js",
-  "type": "module"
+  "type": "module",
   "scripts": {
+    "dev": "webpack --config=Scripts/config/webpack.dev.js --watch",
     "build": "npx tsc",
-        "start": "npm run build && node dist/server.js",
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "seed": "node dist/seeds/index.js"
+    "start": "npm run build && node dist/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "node dist/seeds/index.js"
   },
   "keywords": [],
   "author": "",
@@ -22,5 +23,8 @@
     "mongoose": "^8.9.2",
     "npx": "^3.0.0",
     "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "webpack-cli": "^6.0.1"
   }
 }
