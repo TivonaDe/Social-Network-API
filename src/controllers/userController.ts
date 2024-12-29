@@ -1,8 +1,22 @@
 const User = require('../models/User');
 const Thought = require('../models/Thought');
 
+
 // GET all users
-const getAllUsers = async (req, res) => {
+interface Request {
+  params: {
+    userId: string;
+    friendId?: string;
+  };
+  body: any;
+}
+
+interface Response {
+  status: (code: number) => Response;
+  json: (data: any) => void;
+}
+
+const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users = await User.find();
     res.json(users);
@@ -12,7 +26,15 @@ const getAllUsers = async (req, res) => {
 };
 
 // GET a single user by _id and populate thoughts and friends
-const getUserById = async (req, res) => {
+interface GetUserByIdRequest extends Request {
+  params: {
+    userId: string;
+  };
+}
+
+interface GetUserByIdResponse extends Response {}
+
+const getUserById = async (req: GetUserByIdRequest, res: GetUserByIdResponse): Promise<void> => {
   try {
     const user = await User.findById(req.params.userId).populate('thoughts').populate('friends');
     if (!user) {
@@ -25,7 +47,17 @@ const getUserById = async (req, res) => {
 };
 
 // POST a new user
-const createUser = async (req, res) => {
+interface CreateUserRequest extends Request {
+  body: {
+    username: string;
+    email: string;
+    // Add other user fields here
+  };
+}
+
+interface CreateUserResponse extends Response {}
+
+const createUser = async (req: CreateUserRequest, res: CreateUserResponse): Promise<void> => {
   try {
     const user = new User(req.body);
     await user.save();
@@ -36,7 +68,20 @@ const createUser = async (req, res) => {
 };
 
 // PUT to update a user by _id
-const updateUser = async (req, res) => {
+interface UpdateUserRequest extends Request {
+  params: {
+    userId: string;
+  };
+  body: {
+    username?: string;
+    email?: string;
+    // Add other user fields here
+  };
+}
+
+interface UpdateUserResponse extends Response {}
+
+const updateUser = async (req: UpdateUserRequest, res: UpdateUserResponse): Promise<void> => {
   try {
     const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
     if (!user) {
@@ -49,7 +94,7 @@ const updateUser = async (req, res) => {
 };
 
 // DELETE a user by _id and associated thoughts
-const deleteUser = async (req, res) => {
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findByIdAndDelete(req.params.userId);
     if (!user) {
@@ -63,7 +108,7 @@ const deleteUser = async (req, res) => {
 };
 
 // POST to add a friend
-const addFriend = async (req, res) => {
+const addFriend = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.params.userId);
     const friend = await User.findById(req.params.friendId);
@@ -79,7 +124,7 @@ const addFriend = async (req, res) => {
 };
 
 // DELETE to remove a friend
-const removeFriend = async (req, res) => {
+const removeFriend = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.params.userId);
     user.friends.pull(req.params.friendId);
@@ -99,3 +144,5 @@ module.exports = {
   addFriend,
   removeFriend,
 };
+
+export {};

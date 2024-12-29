@@ -1,7 +1,8 @@
-const express = require('express');
-const router = express.Router();
+import { Thought } from "../../models/thoughtModel";
+import { Router, Request, Response } from 'express';
 const User = require('../../models/User');
 const mongoose = require('mongoose');
+const router = Router();
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -11,8 +12,9 @@ mongoose.connect(process.env.MONGODB_URI, {
 });
 
 
+
 // GET all users
-router.get('/', async (req, res) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -22,7 +24,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET a single user by ID with populated thoughts and friends
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.userId).populate('thoughts').populate('friends');
     if (!user) {
@@ -35,7 +37,7 @@ router.get('/:userId', async (req, res) => {
 });
 
 // POST a new user
-router.post('/', async (req, res) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     const user = new User(req.body);
     await user.save();
@@ -46,7 +48,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT to update a user by its _id
-router.put('/:userId', async (req, res) => {
+router.put('/:userId', async (req: Request, res: Response) => {
   try {
     const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
     if (!user) {
@@ -59,7 +61,7 @@ router.put('/:userId', async (req, res) => {
 });
 
 // DELETE a user by its _id (BONUS: Remove thoughts)
-router.delete('/:userId', async (req, res) => {
+router.delete('/:userId', async (req: Request, res: Response) => {
   try {
     const user = await User.findByIdAndDelete(req.params.userId);
     if (!user) {
@@ -73,3 +75,5 @@ router.delete('/:userId', async (req, res) => {
 });
 
 module.exports = router;
+
+export {};

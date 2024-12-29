@@ -4,7 +4,9 @@ import { User } from '../models/userModel';
 
 
 // GET all thoughts
-const getAllThoughts = async (req, res) => {
+import { Request, Response } from 'express';
+
+const getAllThoughts = async (req: Request, res: Response) => {
   try {
     const thoughts = await Thought.find();
     res.json(thoughts);
@@ -14,7 +16,7 @@ const getAllThoughts = async (req, res) => {
 };
 
 // GET a single thought by _id
-const getThoughtById = async (req, res) => {
+const getThoughtById = async (req: Request, res: Response) => {
   try {
     const thought = await Thought.findById(req.params.thoughtId);
     if (!thought) {
@@ -27,7 +29,7 @@ const getThoughtById = async (req, res) => {
 };
 
 // POST to create a new thought
-const createThought = async (req, res) => {
+const createThought = async (req: Request, res: Response) => {
   try {
     const thought = new Thought(req.body);
     await thought.save();
@@ -39,7 +41,7 @@ const createThought = async (req, res) => {
 };
 
 // PUT to update a thought by _id
-const updateThought = async (req, res) => {
+const updateThought = async (req: Request, res: Response) => {
   try {
     const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, { new: true });
     if (!thought) {
@@ -52,7 +54,7 @@ const updateThought = async (req, res) => {
 };
 
 // DELETE a thought by _id
-const deleteThought = async (req, res) => {
+const deleteThought = async (req: Request, res: Response) => {
   try {
     const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
     if (!thought) {
@@ -71,3 +73,4 @@ module.exports = {
   updateThought,
   deleteThought,
 };
+export {};

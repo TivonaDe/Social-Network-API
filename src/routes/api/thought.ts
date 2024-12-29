@@ -1,15 +1,19 @@
-const express = require('express');
-const router = express.Router();
+import { Router } from 'express';
+import type { Request, Response } from 'express';
+import type { ParamsDictionary } from 'express-serve-static-core';
+const router = Router();
 const Thought = require('../../models/Thought');
 const User = require('../../models/User');
-const mongoose = require('mongoose');
+import mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  throw new Error('MONGODB_URI is not defined in the environment variables');
+}
+
+mongoose.connect(mongoUri);
 
 
 // GET all thoughts
@@ -22,8 +26,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a single thought by _id
-router.get('/:thoughtId', async (req, res) => {
+// router.get('/:thoughtId', async (req: Request<ParamsDictionary & { thoughtId: string }>, res: Response) => {
+router.get('/:thoughtId', async (req: Request<{ thoughtId: string }>, res: Response) => {
   try {
     const thought = await Thought.findById(req.params.thoughtId);
     if (!thought) {
@@ -48,7 +52,7 @@ router.post('/', async (req, res) => {
 });
 
 // PUT to update a thought by _id
-router.put('/:thoughtId', async (req, res) => {
+router.put('/:thoughtId', async (req: Request<{ thoughtId: string }>, res: Response) => {
   try {
     const thought = await Thought.findByIdAndUpdate(req.params.thoughtId, req.body, { new: true });
     if (!thought) {
@@ -61,7 +65,7 @@ router.put('/:thoughtId', async (req, res) => {
 });
 
 // DELETE a thought by _id
-router.delete('/:thoughtId', async (req, res) => {
+router.delete('/:thoughtId', async (req: Request<{ thoughtId: string }>, res: Response) => {
   try {
     const thought = await Thought.findByIdAndDelete(req.params.thoughtId);
     if (!thought) {
@@ -74,3 +78,4 @@ router.delete('/:thoughtId', async (req, res) => {
 });
 
 module.exports = router;
+export {};

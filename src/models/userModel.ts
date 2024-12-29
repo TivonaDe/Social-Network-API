@@ -1,12 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 const { Schema } = mongoose;
-const dotenv = require('dotenv');
 dotenv.config();
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  throw new Error('MONGODB_URI is not defined in the environment variables');
+}
+
+mongoose.connect(mongoUri);
 
 
 const userSchema = new Schema(
@@ -41,3 +43,4 @@ userSchema.virtual('friendCount').get(function () {
 
 const User = mongoose.model('User', userSchema);
 module.exports = User;
+export { User };

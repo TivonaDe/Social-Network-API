@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 const { Schema: MongooseSchema } = mongoose;
 dotenv.config();
 
@@ -10,7 +11,13 @@ if (!mongoUri) {
 mongoose.connect(mongoUri);
 
 
-const reactionSchema = new MongooseSchema(
+interface IReaction {
+  reactionBody: string;
+  username: string;
+  createdAt: Date;
+}
+
+const reactionSchema = new MongooseSchema<IReaction>(
   {
     reactionBody: {
       type: String,
@@ -24,7 +31,7 @@ const reactionSchema = new MongooseSchema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (timestamp) => timestamp.toISOString(),
+      transform: (createdAt: Date) => createdAt.toISOString(),
     },
   },
   {
@@ -36,3 +43,5 @@ const reactionSchema = new MongooseSchema(
 );
 
 module.exports = reactionSchema;
+export const Reaction = mongoose.model('Reaction', reactionSchema);
+export {};

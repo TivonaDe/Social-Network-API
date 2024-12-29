@@ -1,15 +1,12 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+import express = require('express');
+import mongoose = require('mongoose');
+import dotenv = require('dotenv');
 const config = require('./config'); // Import the config
 
-const app = express();npm i cli
+const app = express();
 
 // Connect to MongoDB using the config file
-mongoose.connect(config.mongodbURI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(config.mongodbURI)
 .then(() => console.log(`MongoDB connected in ${config.environment} mode`))
 .catch((err) => console.error('Error connecting to MongoDB:', err));
 
@@ -19,11 +16,6 @@ app.use(express.json());
 // Start the server
 app.listen(config.port, () => {
   console.log(`Server running on port ${config.port} in ${config.environment} mode`);
-});
-
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialNetwork', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
 });
 
 const userRoutes = require('./routes/api/users');
@@ -39,3 +31,6 @@ app.listen(PORT, () => {
   require('dotenv').config();
 
 });
+
+export = config;
+export {};

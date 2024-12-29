@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 const dotenv = require('dotenv');
 const User = require('../models/User');  // Adjust the path if needed
 const Thought = require('../models/Thought');  // Adjust the path if needed
@@ -8,10 +8,7 @@ const Reaction = require('../models/Reaction');  // Adjust the path if needed
 dotenv.config();
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialNetwork', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/socialNetwork')
 .then(() => console.log('MongoDB connected'))
 .catch((err) => console.log('Error connecting to MongoDB:', err));
 
@@ -110,3 +107,4 @@ const seedDatabase = async () => {
 
 // Run the seed script
 seedDatabase();
+export {};

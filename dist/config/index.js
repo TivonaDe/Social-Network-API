@@ -6,4 +6,4 @@ const config = {
   mongodbURI: process.env.MONGODB_URI || 'mongodb://localhost/socialNetwork', // Local DB as fallback
 };
 
-module.exports = config;
+export default config;

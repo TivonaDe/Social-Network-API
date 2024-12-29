@@ -7,13 +7,16 @@ if (!process.env.MONGODB_URI) {
   throw new Error('MONGODB_URI is not defined in the environment variables');
 }
 
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(process.env.MONGODB_URI);
 
+interface IThought {
+  thoughtText: string;
+  createdAt: Date;
+  username: string;
+  reactions: mongoose.Types.ObjectId[];
+}
 
-const thoughtSchema = new Schema(
+const thoughtSchema = new Schema<IThought>(
   {
     thoughtText: {
       type: String,
@@ -24,7 +27,7 @@ const thoughtSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: (timestamp) => timestamp.toISOString(),
+      get: (timestamp: Date) => timestamp,
     },
     username: {
       type: String,
@@ -53,3 +56,4 @@ thoughtSchema.virtual('reactionCount').get(function () {
 
 export const Thought = mongoose.model('Thought', thoughtSchema);
 module.exports = Thought;
+export {};
