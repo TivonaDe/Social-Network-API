@@ -16,7 +16,7 @@ interface Response {
   json: (data: any) => void;
 }
 
-const getAllUsers = async (req: Request, res: Response): Promise<void> => {
+export const getAllUsers = async (req: Request, res: Response): Promise<void> => {
   try {
     const users = await User.find();
     res.json(users);
@@ -34,7 +34,7 @@ interface GetUserByIdRequest extends Request {
 
 interface GetUserByIdResponse extends Response {}
 
-const getUserById = async (req: GetUserByIdRequest, res: GetUserByIdResponse): Promise<void> => {
+export const getUserById = async (req: GetUserByIdRequest, res: GetUserByIdResponse): Promise<void> => {
   try {
     const user = await User.findById(req.params.userId).populate('thoughts').populate('friends');
     if (!user) {
@@ -57,7 +57,7 @@ interface CreateUserRequest extends Request {
 
 interface CreateUserResponse extends Response {}
 
-const createUser = async (req: CreateUserRequest, res: CreateUserResponse): Promise<void> => {
+export const createUser = async (req: CreateUserRequest, res: CreateUserResponse): Promise<void> => {
   try {
     const user = new User(req.body);
     await user.save();
@@ -81,7 +81,7 @@ interface UpdateUserRequest extends Request {
 
 interface UpdateUserResponse extends Response {}
 
-const updateUser = async (req: UpdateUserRequest, res: UpdateUserResponse): Promise<void> => {
+export const updateUser = async (req: UpdateUserRequest, res: UpdateUserResponse): Promise<void> => {
   try {
     const user = await User.findByIdAndUpdate(req.params.userId, req.body, { new: true });
     if (!user) {
@@ -94,7 +94,7 @@ const updateUser = async (req: UpdateUserRequest, res: UpdateUserResponse): Prom
 };
 
 // DELETE a user by _id and associated thoughts
-const deleteUser = async (req: Request, res: Response): Promise<void> => {
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findByIdAndDelete(req.params.userId);
     if (!user) {

@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 const Thought = require('../models/Thought');
 const Reaction = require('../models/Reaction');
 
-const createReaction = async (req: Request, res: Response) => {
+export const createReaction = async (req: Request, res: Response) => {
   try {
     const reaction = new Reaction(req.body);
     await reaction.save();
@@ -17,7 +17,7 @@ const createReaction = async (req: Request, res: Response) => {
   }
 };
 
-const removeReaction = async (req: Request, res: Response) => {
+export const removeReaction = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findById(req.params.thoughtId);
         thought.reactions.pull(req.params.reactionId);
